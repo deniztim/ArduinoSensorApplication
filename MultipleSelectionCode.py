@@ -11,6 +11,7 @@ from os import system
 
 WARMTH = '2'
 DISTANCE = '1'
+START = '0'
 SensorSelect = 'NullSensor'
 
 ser = serial.Serial("COM3",9600,timeout=5);
@@ -19,6 +20,7 @@ time.sleep(1)
 
 print("To read from the Distance Sensor, enter 'Distance'")
 print("To read from the Warmth Sensor, enter 'Warmth'")
+print("To Start Process, enter 'Start'")
 
 while SensorSelect != "Start":
     SensorSelect = input("What do you want to measure?:")
@@ -28,6 +30,9 @@ while SensorSelect != "Start":
     
     if(SensorSelect=='Warmth'):
         ser.write(str.encode(WARMTH))
+        
+    if(SensorSelect=='Start'):
+        break
         
 write_to_file_path_distance = "DistanceOutput.txt";
 output_file_distance = open(write_to_file_path_distance, "w");

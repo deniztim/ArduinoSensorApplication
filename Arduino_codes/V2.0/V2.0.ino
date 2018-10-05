@@ -37,18 +37,18 @@ int i = 0;
     data=Serial.read();
     SelectionArray[i]=data;
     i++;
-  }
-  for (int count = 0 ; count < i ; i++)
-  {
-    if (SelectionArray[count] == '1')
-    {
-      SetupDistance();
+      for (int count = 0 ; count < i ; count++)
+      {
+        if (SelectionArray[count] == '1')
+        {
+          SetupDistance();
+        }
+        else if (SelectionArray[count] == '2')
+        {
+          SetupOther();
+        }
+      }
     }
-    else if (SelectionArray[count] == '2')
-    {
-      SetupOther();
-    }
-  }
 }
 
 void SetupOther(){
