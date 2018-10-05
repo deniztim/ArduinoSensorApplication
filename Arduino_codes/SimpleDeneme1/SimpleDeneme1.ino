@@ -5,8 +5,6 @@
 byte trigger = 10;
 byte echo = 11;
 
-int i=0;
-int SelectionArray[16];
 unsigned long sure;
 double toplamYol; 
 int aradakiMesafe; 
@@ -29,20 +27,38 @@ void setup() {
   display.display();
   delay(500);
 }
+
 void loop()
 {
+int SelectionArray[3];
+int i = 0;
   while (Serial.available())
   {
-  data=Serial.read();
-  SelectSensorArray();
-   }
-   
+    data=Serial.read();
+    SelectionArray[i]=data;
+    i++;
+  }
+  for (int count = 0 ; count < i ; i++)
+  {
+    if (SelectionArray[count] == '1')
+    {
+      SetupDistance();
+    }
+    else if (SelectionArray[count] == '2')
+    {
+      SetupOther();
+    }
+  }
 }
 
 void SetupOther(){
-    Serial.print("I am not setup yet.\n");
-    delay(2000);
-  }
+  Serial.println("Im not Setup");
+  display.clearDisplay();
+  display.setCursor(5,15);
+  display.println("Im not Setup");
+  display.display();
+  delay(2000);
+}
   
 void SetupDistance(){
   digitalWrite(trigger, HIGH);
@@ -68,22 +84,3 @@ void SetupDistance(){
   display.display();
   delay(2000);
   }
-  
-void SelectSensorArray()
- {
-  SelectionArray[i] = data;
-  i++;
-  }
-void SetupSelected()
-{
-  for(int count =  0 ; count < i ; count++)
-   {
-    if (SelectionArray[count] == '1')
-    {
-      SetupDistance();
-    }
-    else if (SelectionArray[count] == '2')
-    {
-      SetupOther();
-    }
-}
