@@ -59,7 +59,7 @@ void loop()
 
 void SetupTemparature()
 {
-  display.setCursor(5,5);
+  display.setCursor(5,27);
   tempVal = analogRead(tempPin);
   float mv = ( tempVal/1024.0)*5000; 
   float cel = mv/10;
@@ -67,8 +67,9 @@ void SetupTemparature()
   Serial.print(cel);
   Serial.println(" C\n");
   display.println("C: ");
-  display.setCursor(20,5);
+  display.setCursor(20,27);
   display.print(cel);
+  display.display();
   delay(500);
 }
   
