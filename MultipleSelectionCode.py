@@ -14,7 +14,7 @@ DISTANCE = '1'
 START = '0'
 SensorSelect = 'NullSensor'
 
-ser = serial.Serial("COM3",9600,timeout=5);
+ser = serial.Serial("/dev/ttyACM0",9600,timeout=5);
 time.sleep(1)
 
 
