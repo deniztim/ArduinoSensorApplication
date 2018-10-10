@@ -37,16 +37,20 @@ while SensorSelect != "Start":
 write_to_file_path_distance = "DistanceOutput.txt";
 output_file_distance = open(write_to_file_path_distance, "w");
 
-write_to_file_path_other = "OtherOutput.txt";
-output_file_other = open(write_to_file_path_other, "w");
+write_to_file_path_other = "WarmthOutput.txt";
+output_file_warmth = open(write_to_file_path_other, "w");
 
 
 while True:
     try:
-        line = ser.readline();
+        line = ser.readline()
         line = line.decode("utf-8") #ser.readline returns a binary, convert to string
-        print(line);
-        output_file_other.write(line);
-    except:
+        print(line)
+        if " cm" in line:
+            output_file_distance.write(line)
+        else:
+            output_file_warmth.write(line)
+    except KeyboardInterrupt:
         print("Keyboard Interrupt")
+        ser.close()
         break
