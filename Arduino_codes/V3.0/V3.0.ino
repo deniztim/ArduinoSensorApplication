@@ -1,19 +1,23 @@
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_PCD8544.h>
+#include <dht11.h>
 
+int LDRPin = 1;
+int tempPin = 0;
 byte trigger = 10;
 byte echo = 11;
+Adafruit_PCD8544 display = Adafruit_PCD8544(4, 5, 6, 7, 8);
 
+dht11 DHT11;
 int tempVal;
-int tempPin = 0;
-int SelectionArray[3];
+int SelectionArray[8];
 int i = 0;
 unsigned long travelTime;
 double totalDistance; 
 int distance; 
 int data;
-Adafruit_PCD8544 display = Adafruit_PCD8544(4, 5, 6, 7, 8);
+int LDRValue = 0;
 
 void setup()
 {
@@ -52,23 +56,32 @@ void loop()
     {
       SetupTemparature();
     }
+    else if (SelectionArray[count] == '3')
+    {
+      SetupHumidityWarmth();
+    }
+    else if (SelectionArray[count] == '4')
+    {
+      SetupLDR();
+    }
   }
     
-    delay(1000);
+    delay(500);
 }
 
 void SetupTemparature()
 {
-  display.setCursor(5,5);
+  display.setCursor(5,27);
   tempVal = analogRead(tempPin);
   float mv = ( tempVal/1024.0)*5000; 
   float cel = mv/10;
   
-  Serial.print(cel);
-  Serial.println(" C\n");
+  Serial.print("\nC ");
+  Serial.println(cel);
   display.println("C: ");
-  display.setCursor(20,5);
+  display.setCursor(20,27);
   display.print(cel);
+  display.display();
   delay(500);
 }
   
@@ -84,11 +97,39 @@ void SetupDistance()
   totalDistance = (double)travelTime*0.034;
   distance = totalDistance / 2;
   
-  Serial.print(distance);
-  Serial.println(" cm\n");
+  Serial.print("\ncm ");
+  Serial.println(distance);
   display.println("Cm: ");
   display.setCursor(20,14);
   display.print(distance);
+  display.display();
+  delay(500);
+}
+
+void SetupHumidityWarmth()
+{
+  DHT11.attach(9);
+  int chk = DHT11.read();
+  Serial.print("\nHumidity: ");
+  Serial.println((double)DHT11.humidity, 9);
+  delay(50);
+  Serial.print("\nTemparature: ");
+  Serial.println((double)DHT11.temperature, 9);
+  delay(50);
+  Serial.print("\nDewPoint: ");
+  Serial.println(DHT11.dewPoint(), 9);
+  delay(500);
+}
+
+void SetupLDR()
+{
+  display.setCursor(5,5);
+  LDRValue = analogRead(LDRPin);
+  Serial.print("\nLightDensity: ");
+  Serial.println(LDRValue);
+  display.println("\nLight: ");
+  display.setCursor(35,5);
+  display.print(LDRValue);
   display.display();
   delay(500);
 }
