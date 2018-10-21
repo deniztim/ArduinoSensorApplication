@@ -9,6 +9,7 @@ WARMTH = '2'
 DISTANCE = '1'
 START = '0'
 sensorSelect = 'NullSensor'
+userSelection = 1
 
 ser = serial.Serial("COM3",9600,timeout=5);
 time.sleep(1)
@@ -25,11 +26,38 @@ if (os.path.exists('Config.json')==False):
     Field = input("Enter the field of work:")
     MachineId = input("Enter the Machine's ID:")
     
+    print("The sensors available are: Distance, Warmth, Light Density, Humidity and Warmth")
+    print("To Start Processing, enter 'Start'")
+    print("What do you want to measure?:")
+    
+    sensorSelect=[]
+    count = 0
+    while userSelection != 'Start':
+        userSelection = input(":->")
+        
+        if(userSelection=='Distance'):
+            sensorSelect.append(DISTANCE)
+        
+        if(userSelection=='Warmth'):
+            sensorSelect.append(WARMTH)
+            
+        if(userSelection=='Humidity and Warmth'):
+            sensorSelect.append(HUMIDITYANDWARMTH)
+            
+        if(userSelection=='Light Density'):
+            sensorSelect.append(LIGHTDENSITY)
+            
+        if(userSelection=='Start'):
+            sensorSelect.append(START)
+        
+    count=count+1
+    
     Config = {
             'Company':Company,
             'Dept':Dept,
             'Field':Field,
-            'MachineId':MachineId
+            'MachineId':MachineId,
+            'SensorSetup':sensorSelect
             }
     
     json = json.dumps(Config)
@@ -37,28 +65,23 @@ if (os.path.exists('Config.json')==False):
     f.write(json)
     f.close()
 
-print("To read from the Distance Sensor, enter 'Distance'")
-print("To read from the Warmth Sensor, enter 'Warmth'")
-print("To read from the Light Density Sensor, enter 'Light Density'")
-print("To read from the Humidity and Warmth Sensor, enter 'Humidity and Warmth'")
-print("To Start Process, enter 'Start'")
-
-while sensorSelect != "Start":
-    sensorSelect = input("What do you want to measure?:")
-    if(sensorSelect=='Distance'):
+sensorcount = 0
+while sensorSelect[sensorcount] != 0:
+    if(sensorSelect[sensorcount]=='Distance'):
         ser.write(str.encode(DISTANCE))
     
-    if(sensorSelect=='Warmth'):
+    if(sensorSelect[sensorcount]=='Warmth'):
         ser.write(str.encode(WARMTH))
         
-    if(sensorSelect=='Humidity and Warmth'):
+    if(sensorSelect[sensorcount]=='Humidity and Warmth'):
         ser.write(str.encode(HUMIDITYANDWARMTH))
         
-    if(sensorSelect=='Light Density'):
+    if(sensorSelect[sensorcount]=='Light Density'):
         ser.write(str.encode(LIGHTDENSITY))
         
     if(sensorSelect=='Start'):
         break
+    sensorcount=sensorcount+1
         
 write_to_file_path_garbage = "GarbageData.txt";
 output_file_garbage = open(write_to_file_path_garbage, "w");
