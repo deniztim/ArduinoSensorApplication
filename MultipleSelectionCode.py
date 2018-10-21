@@ -65,6 +65,11 @@ if (os.path.exists('Config.json')==False):
     f.write(json)
     f.close()
 
+sensorselect_dict = {
+        }
+with open("Config.json", "r") as jsonfile:
+    json.dump(sensorselect_dict, jsonfile)
+    
 sensorcount = 0
 while sensorSelect[sensorcount] != 0:
     if(sensorSelect[sensorcount]=='Distance'):
