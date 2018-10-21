@@ -66,7 +66,7 @@ void loop()
     }
   }
     
-    delay(1000);
+    delay(500);
 }
 
 void SetupTemparature()
