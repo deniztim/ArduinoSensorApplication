@@ -1,6 +1,7 @@
 import serial
 import time
-from os import system
+import json
+import os
 
 LIGHTDENSITY = '4'
 HUMIDITYANDWARMTH = '3'
@@ -12,6 +13,29 @@ sensorSelect = 'NullSensor'
 ser = serial.Serial("COM3",9600,timeout=5);
 time.sleep(1)
 
+Something = input("Do you want to set another Configuration file for your Sensors? Enter Y/N:")
+if (Something == 'Y'):
+    if (os.path.exists('Config.json')==True):
+        os.remove('Config.json')
+
+if (os.path.exists('Config.json')==False):
+    
+    Company = input("Enter your company name:")
+    Dept = input("Enter the Departments Name:")
+    Field = input("Enter the field of work:")
+    MachineId = input("Enter the Machine's ID:")
+    
+    Config = {
+            'Company':Company,
+            'Dept':Dept,
+            'Field':Field,
+            'MachineId':MachineId
+            }
+    
+    json = json.dumps(Config)
+    f = open("Config.json","w")
+    f.write(json)
+    f.close()
 
 print("To read from the Distance Sensor, enter 'Distance'")
 print("To read from the Warmth Sensor, enter 'Warmth'")
