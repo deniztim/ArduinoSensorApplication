@@ -12,6 +12,7 @@ DISTANCE = '1'
 START = '0'
 sensorSelect = 'NullSensor'
 userSelection = 1
+available_sensors=['Distance', 'Warmth', 'Light Density', 'Humidity', 'Warmth']
 
 ser = serial.Serial("COM3",9600,timeout=5); #Might be changed according to OS and USB setup
 time.sleep(1)
@@ -76,12 +77,13 @@ if (os.path.exists('Sensor_Config.json')==False):
     print("There isny any Sensor Information at the moment. Please proceed to selecting Sensors.")
     print("Please Select the Sensors you want to setup")
 
-    print("The sensors available are: Distance, Warmth, Light Density, Humidity and Warmth")
+    print("The sensors available are: ")
+    print(available_sensors)
     print("To Start Processing, enter 'Start'")
     print("What do you want to measure?:")
     
     sensorSelect=[]
-    count = 0
+
     while userSelection != 'Start':
         userSelection = input(":->")
         
@@ -99,8 +101,6 @@ if (os.path.exists('Sensor_Config.json')==False):
             
         if(userSelection=='Start'):
             sensorSelect.append(START)
-        
-    count=count+1
     
     sensorselect = {
         'SensorSetup':sensorSelect
