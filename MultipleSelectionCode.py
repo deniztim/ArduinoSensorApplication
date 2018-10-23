@@ -3,6 +3,8 @@ import time
 import json
 import os
 
+###Initialization###
+
 LIGHTDENSITY = '4'
 HUMIDITYANDWARMTH = '3'
 WARMTH = '2'
@@ -11,21 +13,67 @@ START = '0'
 sensorSelect = 'NullSensor'
 userSelection = 1
 
-ser = serial.Serial("COM3",9600,timeout=5);
+ser = serial.Serial("COM3",9600,timeout=5); #Might be changed according to OS and USB setup
 time.sleep(1)
 
-Something = input("Do you want to set another Configuration file for your Sensors? Enter Y/N:")
-if (Something == 'Y'):
-    if (os.path.exists('Config.json')==True):
-        os.remove('Config.json')
+###Configuration File Part###
 
+if (os.path.exists('Config.json')==True):
+    with open("Config.json", "r") as jsonfile:
+        config_data = json.load(jsonfile)
+    
+    print("A config file has been found!")
+    print('Company Name:'+ config_data['Company'])
+    print('Dept Name:'+ config_data['Dept'])
+    print('Field of Work:'+ config_data['Field'])
+    print("Machine's ID:"+ config_data['MachineId'])
+    
+    Initialize = input("Do you want to set another Configuration file for your Company? Enter Y/N:")
+    
+    if (Initialize == 'Y'):
+        os.remove('Config.json')
+        
 if (os.path.exists('Config.json')==False):
+    print("Config file hasnt been initialized Please follow these steps")
     
     Company = input("Enter your company name:")
     Dept = input("Enter the Departments Name:")
     Field = input("Enter the field of work:")
     MachineId = input("Enter the Machine's ID:")
     
+    Config = {
+            'Company':Company,
+            'Dept':Dept,
+            'Field':Field,
+            'MachineId':MachineId
+            }
+    json = json.dumps(Config)
+    f = open("Config.json","w")
+    f.write(json)
+    f.close()
+    
+###Sensor Configuration File Part###
+    
+if (os.path.exists('Sensor_Config.json')==True):
+    with open("Sensor_Config.json", "r") as jsonfile:
+        sensor_data = json.load(jsonfile)
+    
+    print("A config file has been found!")
+    sensorlist = sensor_data['SensorSetup']
+    print('Sensors Setup:')
+    print(sensorlist)
+
+    Initialize = input("Do you want to set another Configuration file for your Sensors? Enter Y/N:")
+    
+    if (Initialize == 'Y'):
+        os.remove('Sensor_Config.json')
+        
+if (os.path.exists('Sensor_Config.json')==False):
+    print("")
+    print("")
+    print("There is no Sensor_Config at the moment. Please proceed to selecting Sensors.")
+    print("Please Select the Sensors you want to setup")
+
     print("The sensors available are: Distance, Warmth, Light Density, Humidity and Warmth")
     print("To Start Processing, enter 'Start'")
     print("What do you want to measure?:")
@@ -52,39 +100,36 @@ if (os.path.exists('Config.json')==False):
         
     count=count+1
     
-    Config = {
-            'Company':Company,
-            'Dept':Dept,
-            'Field':Field,
-            'MachineId':MachineId,
-            'SensorSetup':sensorSelect
-            }
+    sensorselect = {
+        'SensorSetup':sensorSelect
+        }
     
-    json = json.dumps(Config)
-    f = open("Config.json","w")
+    json = json.dumps(sensorselect)
+    f = open("Sensor_Config.json","w")
     f.write(json)
     f.close()
+    
+###Serial Data Send TO Arduino###
 
-sensorselect_dict = {
-        }
-with open("Config.json", "r") as jsonfile:
-    json.dump(sensorselect_dict, jsonfile)
+with open("Sensor_Config.json", "r") as jsonfile:
+    sensor_data = json.load(jsonfile)
+    sensorlist = sensor_data['SensorSetup']
     
 sensorcount = 0
-while sensorSelect[sensorcount] != 0:
-    if(sensorSelect[sensorcount]=='Distance'):
+while len(sensorlist) > sensorcount:
+    if(sensorlist[sensorcount]=='1'):
         ser.write(str.encode(DISTANCE))
     
-    if(sensorSelect[sensorcount]=='Warmth'):
+    if(sensorlist[sensorcount]=='2'):
         ser.write(str.encode(WARMTH))
         
-    if(sensorSelect[sensorcount]=='Humidity and Warmth'):
+    if(sensorlist[sensorcount]=='3'):
         ser.write(str.encode(HUMIDITYANDWARMTH))
         
-    if(sensorSelect[sensorcount]=='Light Density'):
+    if(sensorlist[sensorcount]=='4'):
         ser.write(str.encode(LIGHTDENSITY))
         
-    if(sensorSelect=='Start'):
+    if(sensorlist[sensorcount]=='0'):
         break
     sensorcount=sensorcount+1
         
