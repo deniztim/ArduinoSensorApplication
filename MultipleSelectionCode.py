@@ -22,11 +22,12 @@ if (os.path.exists('Config.json')==True):
     with open("Config.json", "r") as jsonfile:
         config_data = json.load(jsonfile)
     
-    print("A config file has been found!")
+    print("A Company Information file has been found!")
     print('Company Name:'+ config_data['Company'])
     print('Dept Name:'+ config_data['Dept'])
     print('Field of Work:'+ config_data['Field'])
     print("Machine's ID:"+ config_data['MachineId'])
+    print('')
     
     Initialize = input("Do you want to set another Configuration file for your Company? Enter Y/N:")
     
@@ -58,11 +59,13 @@ if (os.path.exists('Sensor_Config.json')==True):
     with open("Sensor_Config.json", "r") as jsonfile:
         sensor_data = json.load(jsonfile)
     
+    print('')
     print("A config file has been found!")
     sensorlist = sensor_data['SensorSetup']
     print('Sensors Setup:')
     print(sensorlist)
-
+    print('')
+    
     Initialize = input("Do you want to set another Configuration file for your Sensors? Enter Y/N:")
     
     if (Initialize == 'Y'):
@@ -70,8 +73,7 @@ if (os.path.exists('Sensor_Config.json')==True):
         
 if (os.path.exists('Sensor_Config.json')==False):
     print("")
-    print("")
-    print("There is no Sensor_Config at the moment. Please proceed to selecting Sensors.")
+    print("There isny any Sensor Information at the moment. Please proceed to selecting Sensors.")
     print("Please Select the Sensors you want to setup")
 
     print("The sensors available are: Distance, Warmth, Light Density, Humidity and Warmth")
