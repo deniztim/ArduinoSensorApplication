@@ -86,16 +86,16 @@ if (os.path.exists('Sensor_Config.json')==False):
         userSelection = input(":->")
         
         if(userSelection=='Distance'):
-            sensorSelect.append(DISTANCE)
+            sensorSelect.append('Distance')
         
         if(userSelection=='Warmth'):
-            sensorSelect.append(WARMTH)
+            sensorSelect.append('Warmth')
             
         if(userSelection=='Humidity and Warmth'):
-            sensorSelect.append(HUMIDITYANDWARMTH)
+            sensorSelect.append('Humidity and Warmth')
             
         if(userSelection=='Light Density'):
-            sensorSelect.append(LIGHTDENSITY)
+            sensorSelect.append('Light Density')
             
         if(userSelection=='Start'):
             sensorSelect.append(START)
@@ -119,17 +119,25 @@ with open("Sensor_Config.json", "r") as jsonfile:
     
 sensorcount = 0
 while len(sensorlist) > sensorcount:
-    if(sensorlist[sensorcount]=='1'):
+    if(sensorlist[sensorcount]=='Distance'):
         ser.write(str.encode(DISTANCE))
-    
-    if(sensorlist[sensorcount]=='2'):
+        write_to_file_path_distance = "distanceOutput.txt"
+        output_file_distance = open(write_to_file_path_distance, "w")
+        
+    if(sensorlist[sensorcount]=='Warmth'):
         ser.write(str.encode(WARMTH))
+        write_to_file_path_warmth = "warmthOutput.txt"
+        output_file_warmth = open(write_to_file_path_warmth, "w")
         
-    if(sensorlist[sensorcount]=='3'):
+    if(sensorlist[sensorcount]=='Humidity and Warmth'):
         ser.write(str.encode(HUMIDITYANDWARMTH))
+        write_to_file_path_humidity = "humidityOutput.txt"
+        output_file_humidity = open(write_to_file_path_humidity, "w")
         
-    if(sensorlist[sensorcount]=='4'):
+    if(sensorlist[sensorcount]=='Light Density'):
         ser.write(str.encode(LIGHTDENSITY))
+        write_to_file_path_lightDensity = "lightDensityOutput.txt"
+        output_file_lightDensity = open(write_to_file_path_lightDensity, "w")
         
     if(sensorlist[sensorcount]=='0'):
         break
@@ -137,18 +145,6 @@ while len(sensorlist) > sensorcount:
         
 write_to_file_path_garbage = "GarbageData.txt";
 output_file_garbage = open(write_to_file_path_garbage, "w");
-
-write_to_file_path_distance = "distanceOutput.txt";
-output_file_distance = open(write_to_file_path_distance, "w");
-
-write_to_file_path_warmth = "warmthOutput.txt";
-output_file_warmth = open(write_to_file_path_warmth, "w");
-
-write_to_file_path_humidity = "humidityOutput.txt";
-output_file_humidity = open(write_to_file_path_humidity, "w");
-
-write_to_file_path_lightDensity = "lightDensityOutput.txt";
-output_file_lightDensity = open(write_to_file_path_lightDensity, "w");
 
 while True:
     try:
