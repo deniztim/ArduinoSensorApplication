@@ -14,7 +14,7 @@ sensorSelect = 'NullSensor'
 userSelection = 1
 available_sensors=['Distance', 'Warmth', 'Light Density', 'Humidity', 'Warmth']
 
-ser = serial.Serial("ACM0",9600,timeout=5); #Might be changed according to OS and USB setup
+ser = serial.Serial("/dev/tty/ACM0",9600,timeout=5); #Might be changed according to OS and USB setup
 time.sleep(1)
 
 ###Configuration File Part###
