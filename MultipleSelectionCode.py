@@ -49,9 +49,9 @@ if (os.path.exists('Config.json')==False):
             'Field':Field,
             'MachineId':MachineId
             }
-    json = json.dumps(Config)
+    json_dump = json.dumps(Config)
     f = open("Config.json","w")
-    f.write(json)
+    f.write(json_dump)
     f.close()
     
 ###Sensor Configuration File Part###
@@ -106,9 +106,9 @@ if (os.path.exists('Sensor_Config.json')==False):
         'SensorSetup':sensorSelect
         }
     
-    json = json.dumps(sensorselect)
+    json_dump = json.dumps(sensorselect)
     f = open("Sensor_Config.json","w")
-    f.write(json)
+    f.write(json_dump)
     f.close()
     
 ###Serial Data Send TO Arduino###
