@@ -56,7 +56,7 @@ if (os.path.exists('Config.json')==False):
     
 ###Sensor Configuration File Part###
     
-if (os.path.exists('Sensor_Config.json')==True):
+if (os.path.exists('Sensor_Config.json')):
     with open("Sensor_Config.json", "r") as jsonfile:
         sensor_data = json.load(jsonfile)
     
@@ -72,9 +72,9 @@ if (os.path.exists('Sensor_Config.json')==True):
     if (Initialize == 'Y'):
         os.remove('Sensor_Config.json')
         
-if (os.path.exists('Sensor_Config.json')==False):
+if (!os.path.exists('Sensor_Config.json')):
     print("")
-    print("There isny any Sensor Information at the moment. Please proceed to selecting Sensors.")
+    print("There isn't any Sensor Information at the moment. Please proceed to selecting Sensors.")
     print("Please Select the Sensors you want to setup")
 
     print("The sensors available are: ")
