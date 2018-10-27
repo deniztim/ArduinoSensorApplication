@@ -19,7 +19,7 @@ time.sleep(1)
 
 ###Configuration File Part###
 
-if (os.path.exists('Config.json')==True):
+try:
     with open("Config.json", "r") as jsonfile:
         config_data = json.load(jsonfile)
     
@@ -35,28 +35,35 @@ if (os.path.exists('Config.json')==True):
     if (Initialize == 'Y'):
         os.remove('Config.json')
         
-if (os.path.exists('Config.json')==False):
-    print("Config file hasnt been initialized Please follow these steps")
-    
-    Company = input("Enter your company name:")
-    Dept = input("Enter the Departments Name:")
-    Field = input("Enter the field of work:")
-    MachineId = input("Enter the Machine's ID:")
-    
-    Config = {
-            'Company':Company,
-            'Dept':Dept,
-            'Field':Field,
-            'MachineId':MachineId
-            }
-    json_dump = json.dumps(Config)
-    f = open("Config.json","w")
-    f.write(json_dump)
-    f.close()
+except:
+    print("Error: There is no former Company Config or corrupted!")
+
+try:
+    if (os.path.exists('Config.json') == 0):
+        print("Config file hasnt been initialized Please follow these steps")
+        
+        Company = input("Enter your company name:")
+        Dept = input("Enter the Departments Name:")
+        Field = input("Enter the field of work:")
+        MachineId = input("Enter the Machine's ID:")
+        
+        Config = {
+                'Company':Company,
+                'Dept':Dept,
+                'Field':Field,
+                'MachineId':MachineId
+                }
+        json_dump = json.dumps(Config)
+        f = open("Config.json","w")
+        f.write(json_dump)
+        f.close()
+        
+except IOError:
+    print("Error: Can'read or write the file specified!")
     
 ###Sensor Configuration File Part###
     
-if (os.path.exists('Sensor_Config.json')):
+try:
     with open("Sensor_Config.json", "r") as jsonfile:
         sensor_data = json.load(jsonfile)
     
@@ -72,44 +79,50 @@ if (os.path.exists('Sensor_Config.json')):
     if (Initialize == 'Y'):
         os.remove('Sensor_Config.json')
         
-if (!os.path.exists('Sensor_Config.json')):
-    print("")
-    print("There isn't any Sensor Information at the moment. Please proceed to selecting Sensors.")
-    print("Please Select the Sensors you want to setup")
+except:
+    print('Error: There is no former Sensor Config or corrupted!')     
 
-    print("The sensors available are: ")
-    print(available_sensors)
-    print("To Start Processing, enter 'Start'")
-    print("What do you want to measure?:")
-    
-    sensorSelect=[]
-
-    while userSelection != 'Start':
-        userSelection = input(":->")
+try:
+    if (os.path.exists('Sensor_Config.json') == 0):
+        print("")
+        print("There isn't any Sensor Information at the moment. Please proceed to selecting Sensors.")
+        print("Please Select the Sensors you want to setup")
+        print("The sensors available are: ")
+        print(available_sensors)
+        print("To Start Processing, enter 'Start'")
+        print("What do you want to measure?:")
         
-        if(userSelection=='Distance'):
-            sensorSelect.append('Distance')
+        sensorSelect=[]
+    
+        while userSelection != 'Start':
+            userSelection = input(":->")
+            
+            if(userSelection=='Distance'):
+                sensorSelect.append('Distance')
+            
+            if(userSelection=='Warmth'):
+                sensorSelect.append('Warmth')
+                
+            if(userSelection=='Humidity and Warmth'):
+                sensorSelect.append('Humidity and Warmth')
+                
+            if(userSelection=='Light Density'):
+                sensorSelect.append('Light Density')
+                
+            if(userSelection=='Start'):
+                sensorSelect.append(START)
         
-        if(userSelection=='Warmth'):
-            sensorSelect.append('Warmth')
-            
-        if(userSelection=='Humidity and Warmth'):
-            sensorSelect.append('Humidity and Warmth')
-            
-        if(userSelection=='Light Density'):
-            sensorSelect.append('Light Density')
-            
-        if(userSelection=='Start'):
-            sensorSelect.append(START)
-    
-    sensorselect = {
-        'SensorSetup':sensorSelect
-        }
-    
-    json_dump = json.dumps(sensorselect)
-    f = open("Sensor_Config.json","w")
-    f.write(json_dump)
-    f.close()
+        sensorselect = {
+            'SensorSetup':sensorSelect
+            }
+        
+        json_dump = json.dumps(sensorselect)
+        f = open("Sensor_Config.json","w")
+        f.write(json_dump)
+        f.close()
+        
+except IOError:
+    print("Error: Can'read or write the file specified!")
     
 ###Serial Data Send TO Arduino###
 
@@ -146,7 +159,7 @@ while len(sensorlist) > sensorcount:
 write_to_file_path_garbage = "GarbageData.txt";
 output_file_garbage = open(write_to_file_path_garbage, "w");
 
-while True:
+while True and ser.isOpen():
     try:
         line = ser.readline()
         line = line.decode("utf-8") #ser.readline returns a binary, convert to string
