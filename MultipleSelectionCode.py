@@ -2,6 +2,8 @@ import serial
 import time
 import json
 import os
+import sys
+from serial import SerialException
 
 ###Initialization###
 
@@ -14,8 +16,13 @@ sensorSelect = 'NullSensor'
 userSelection = 1
 available_sensors=['Distance', 'Warmth', 'Light Density', 'Humidity', 'Warmth']
 
-ser = serial.Serial("/dev/tty/ACM0",9600,timeout=5); #Might be changed according to OS and USB setup
-time.sleep(1)
+try:
+    ser = serial.Serial("/dev/tty/ACM0",9600,timeout=5); #Might be changed according to OS and USB setup
+    time.sleep(1)
+except SerialException:
+    print('There is no arduino connected!')
+    sys.exit('Connect a device!')
+
 
 ###Configuration File Part###
 
