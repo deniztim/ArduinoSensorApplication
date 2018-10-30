@@ -181,8 +181,7 @@ while True and ser.isOpen():
             output_file_humidity.write(line)
         if "LightDensity: " in line:
             output_file_lightDensity.write(line)
-        else:
-            output_file_garbage.write(line)
+            
     except KeyboardInterrupt:
         print("Keyboard Interrupt")
         ser.close()
