@@ -8,6 +8,8 @@ import serial
 import time
 import json
 import os
+import sys
+from serial import SerialException
 
 ###Initialization###
 

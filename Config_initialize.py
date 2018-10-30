@@ -17,7 +17,7 @@ userSelection = 1
 available_sensors=['Distance', 'Warmth', 'Light Density', 'Humidity', 'Warmth']
 
 try:
-    ser = serial.Serial("/dev/tty/ACM0",9600,timeout=5); #Might be changed according to OS and USB setup
+    ser = serial.Serial("COM3",9600,timeout=5); #Might be changed according to OS and USB setup
     time.sleep(1)
 except SerialException:
     print('There is no arduino connected!')
@@ -171,7 +171,7 @@ while True and ser.isOpen():
         print(line)
         if "cm " in line:
             output_file_distance.write(line)
-        if "C " in line:
+        if "C " in line:    
             output_file_warmth.write(line)
         if "Humidity: " in line:
             output_file_humidity.write(line)
