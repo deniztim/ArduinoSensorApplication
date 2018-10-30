@@ -4,6 +4,7 @@ import json
 import os
 import sys
 from serial import SerialException
+import requests
 
 ###Initialization###
 
@@ -54,7 +55,8 @@ while True and ser.isOpen():
         line = ser.readline()
         line = line.decode("utf-8") #ser.readline returns a binary, convert to string
         print(line)
-
+        data = {"distance":str(line)}
+        request = request.post('http://10.42.0.14/sensor-test/', data=data)
             
     except KeyboardInterrupt:
         print("Keyboard Interrupt")
