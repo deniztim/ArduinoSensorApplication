@@ -156,8 +156,6 @@ while len(sensorlist) > sensorcount:
         break
     sensorcount=sensorcount+1
         
-write_to_file_path_garbage = "GarbageData.txt";
-output_file_garbage = open(write_to_file_path_garbage, "w");
 
 while True and ser.isOpen():
     try:
