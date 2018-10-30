@@ -2,6 +2,7 @@ import serial
 import time
 import json
 import os
+import requests
 
 ###Initialization###
 
@@ -81,68 +82,68 @@ if (os.path.exists('Sensor_Config.json')==False):
     print(available_sensors)
     print("To Start Processing, enter 'Start'")
     print("What do you want to measure?:")
-    
+
     sensorSelect=[]
 
     while userSelection != 'Start':
         userSelection = input(":->")
-        
+
         if(userSelection=='Distance'):
             sensorSelect.append('Distance')
-        
+
         if(userSelection=='Warmth'):
             sensorSelect.append('Warmth')
-            
+
         if(userSelection=='Humidity and Warmth'):
             sensorSelect.append('Humidity and Warmth')
-            
+
         if(userSelection=='Light Density'):
             sensorSelect.append('Light Density')
-            
+
         if(userSelection=='Start'):
             sensorSelect.append(START)
-    
+
     sensorselect = {
         'SensorSetup':sensorSelect
         }
-    
+
     json_dump = json.dumps(sensorselect)
     f = open("Sensor_Config.json","w")
     f.write(json_dump)
     f.close()
-    
+
 ###Serial Data Send TO Arduino###
 
 with open("Sensor_Config.json", "r") as jsonfile:
     sensor_data = json.load(jsonfile)
     sensorlist = sensor_data['SensorSetup']
-    
+
 sensorcount = 0
 while len(sensorlist) > sensorcount:
     if(sensorlist[sensorcount]=='Distance'):
         ser.write(str.encode(DISTANCE))
         write_to_file_path_distance = "distanceOutput.txt"
         output_file_distance = open(write_to_file_path_distance, "w")
-        
+
     if(sensorlist[sensorcount]=='Warmth'):
         ser.write(str.encode(WARMTH))
         write_to_file_path_warmth = "warmthOutput.txt"
         output_file_warmth = open(write_to_file_path_warmth, "w")
-        
+
     if(sensorlist[sensorcount]=='Humidity and Warmth'):
         ser.write(str.encode(HUMIDITYANDWARMTH))
         write_to_file_path_humidity = "humidityOutput.txt"
         output_file_humidity = open(write_to_file_path_humidity, "w")
-        
+
     if(sensorlist[sensorcount]=='Light Density'):
         ser.write(str.encode(LIGHTDENSITY))
         write_to_file_path_lightDensity = "lightDensityOutput.txt"
         output_file_lightDensity = open(write_to_file_path_lightDensity, "w")
-        
+
     if(sensorlist[sensorcount]=='0'):
         break
     sensorcount=sensorcount+1
-        
+
 write_to_file_path_garbage = "GarbageData.txt";
 output_file_garbage = open(write_to_file_path_garbage, "w");
 
@@ -153,6 +154,8 @@ while True:
         print(line)
         if "cm " in line:
             output_file_distance.write(line)
+            data = {"distance":str(line)}
+            request = requests.post('http://10.42.0.14/sensor-test/', data=data)
         if "C " in line:
             output_file_warmth.write(line)
         if "Humidity: " in line:
