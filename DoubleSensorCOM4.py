@@ -18,7 +18,7 @@ userSelection = 1
 available_sensors=['Distance', 'Warmth', 'Light Density', 'Humidity', 'Warmth']
 
 try:
-    ser = serial.Serial("COM3",9600,timeout=5); #Might be changed according to OS and USB setup
+    ser = serial.Serial("COM4",9600,timeout=5); #Might be changed according to OS and USB setup
     time.sleep(1)
 except SerialException:
     print('There is no arduino connected!')
@@ -168,7 +168,7 @@ while True and ser.isOpen():
         line = line.decode("utf-8") #ser.readline returns a binary, convert to string
         print(line)
         data = {"distance":str(line)}
-#        request = requests.post('http://10.42.0.14/sensor-test/', data=data)
+        request = requests.post('http://10.42.0.14/sensor-test/', data=data)
             
     except KeyboardInterrupt:
         print("Keyboard Interrupt")

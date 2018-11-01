@@ -11,4 +11,4 @@ source ENV_arSens/bin/activate
 cd ArduinoSensorApplication
 pip install requirements.txt
 
-python MultipleSelectionCode.py 
+python Config_initialize.py 
