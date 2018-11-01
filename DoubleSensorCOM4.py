@@ -167,12 +167,15 @@ while True and ser.isOpen():
         line = ser.readline()
         line = line.decode("utf-8") #ser.readline returns a binary, convert to string
         print(line)
-        data = {"distance":str(line)}
-        request = requests.post('http://10.42.0.14/sensor-test/', data=data)
+        data = {
+                "code":'365',
+                "distance":str(line),
+                "sensor_is":'COM4',
+                "ofis":'main_office'
+        }
+        request = requests.post('http://192.168.2.90:8080/collector/socket/form/', data=data)
             
     except KeyboardInterrupt:
         print("Keyboard Interrupt")
         ser.close()
         break
-
-
