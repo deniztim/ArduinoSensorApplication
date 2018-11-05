@@ -15,7 +15,7 @@ DISTANCE = '1'
 START = '0'
 sensorSelect = 'NullSensor'
 userSelection = 1
-available_sensors=['Distance', 'Warmth', 'Light Density', 'Humidity', 'Warmth']
+available_sensors=['Distance', 'Warmth', 'Light Density', 'Humidity and Warmth']
 
 try:
     ser = serial.Serial("COM3",9600,timeout=5); #Might be changed according to OS and USB setup
@@ -40,7 +40,7 @@ try:
     
     Initialize = input("Do you want to set another Configuration file for your Company? Enter Y/N:")
     
-    if (Initialize == 'Y'):
+    if (Initialize.lower() == 'Y'):
         os.remove('Config.json')
         
 except:
@@ -84,7 +84,7 @@ try:
     
     Initialize = input("Do you want to set another Configuration file for your Sensors? Enter Y/N:")
     
-    if (Initialize == 'Y'):
+    if (Initialize.lower() == 'Y'):
         os.remove('Sensor_Config_1.json')
         
 except:
@@ -98,6 +98,9 @@ try:
         print("The sensors available are: ")
         print(available_sensors)
         print("To Start Processing, enter 'Start'")
+        Sensor_name=input("Please enter your sensors name:")
+        Office_name=input("Please enter your office:")
+
         print("What do you want to measure?:")
         
         sensorSelect=[]
@@ -121,7 +124,9 @@ try:
                 sensorSelect.append(START)
         
         sensorselect = {
-            'SensorSetup':sensorSelect
+            'SensorSetup':sensorSelect,
+            'Sensor_name':Sensor_name,
+            'Office_name':Office_name
             }
         
         json_dump = json.dumps(sensorselect)
@@ -169,9 +174,9 @@ while True and ser.isOpen():
         print(line)
         data = {
                 "code":'365',
-                "distance":str(line),
-                "sensor_is":'COM3',
-                "ofis":'main_office'
+                "data":str(line),
+                "sensor_is":sensor_data['Sensor_name'],
+                "ofis":sensor_data['Office_name']
         }
         request = requests.post('http://192.168.2.90:8080/collector/socket/form/', data=data)
             
