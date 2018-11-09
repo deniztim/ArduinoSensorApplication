@@ -18,7 +18,7 @@ userSelection = 1
 available_sensors=['Distance', 'Warmth', 'Light Density', 'Humidity and Warmth']
 
 try:
-    ser = serial.Serial("/dev/ttyACM0",9600,timeout=3); #Might be changed according to OS and USB setup
+    ser = serial.Serial("COM4",9600,timeout=5); #Might be changed according to OS and USB setup
     time.sleep(1)
 except SerialException:
     print('There is no arduino connected!')
@@ -72,7 +72,7 @@ except IOError:
 ###Sensor Configuration File Part###
     
 try:
-    with open("Sensor_Config_2.json", "r") as jsonfile:
+    with open("Sensor_Config_1.json", "r") as jsonfile:
         sensor_data = json.load(jsonfile)
     
     print('')
@@ -85,13 +85,13 @@ try:
     Initialize = input("Do you want to set another Configuration file for your Sensors? Enter Y/N:")
     
     if (Initialize.lower() == 'y'):
-        os.remove('Sensor_Config_2.json')
+        os.remove('Sensor_Config_1.json')
         
 except:
     print('Error: There is no former Sensor Config or corrupted!')     
 
 try:
-    if (os.path.exists('Sensor_Config_2.json') == 0):
+    if (os.path.exists('Sensor_Config_1.json') == 0):
         print("")
         print("There isn't any Sensor Information at the moment. Please proceed to selecting Sensors.")
         print("Please Select the Sensors you want to setup")
@@ -125,12 +125,12 @@ try:
         
         sensorselect = {
             'SensorSetup':sensorSelect,
-            'Sensor_name': Sensor_name,
+            'Sensor_name':Sensor_name,
             'Office_name':Office_name
             }
         
         json_dump = json.dumps(sensorselect)
-        f = open("Sensor_Config_2.json","w")
+        f = open("Sensor_Config_1.json","w")
         f.write(json_dump)
         f.close()
         
@@ -139,7 +139,7 @@ except IOError:
     
 ###Serial Data Send TO Arduino###
 
-with open("Sensor_Config_2.json", "r") as jsonfile:
+with open("Sensor_Config_1.json", "r") as jsonfile:
     sensor_data = json.load(jsonfile)
     sensorlist = sensor_data['SensorSetup']
     
@@ -157,15 +157,15 @@ while len(sensorlist) > sensorcount:
     if(sensorlist[sensorcount]=='Humidity and Warmth'):
         ser.write(str.encode(HUMIDITYANDWARMTH))
 
-
+        
     if(sensorlist[sensorcount]=='Light Density'):
         ser.write(str.encode(LIGHTDENSITY))
 
-
+        
     if(sensorlist[sensorcount]=='0'):
         break
     sensorcount=sensorcount+1
-
+        
 
 while True and ser.isOpen():
     try:
@@ -173,17 +173,6 @@ while True and ser.isOpen():
         line = line.decode("utf-8") #ser.readline returns a binary, convert to string
         print(line)
         data = {
-<<<<<<< HEAD
-                "code":'28',
-		"ref": '0',
-		"name": sensor_data,
-		"last": line
- #               "sensor_is":"xx",  #sensor_data['Sensor_name'],
- #               "ofis":"ofx"   # sensor_data['Office_name']
-        }
-        request = requests.post('http://192.168.2.145:8000/collectors/receive/form/', data=data)
-
-=======
                 "code":'40',
                 "value":str(line),
                 "sensor_no":'3124',
@@ -192,7 +181,6 @@ while True and ser.isOpen():
         }
         request = requests.post('http://192.168.2.90:8080/collectors/receive/form/', data=data)
             
->>>>>>> db6b032e62ed542774e558d0c6cbda6267c3ed16
     except KeyboardInterrupt:
         print("Keyboard Interrupt")
         ser.close()
