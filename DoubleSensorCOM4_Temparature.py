@@ -72,7 +72,7 @@ except IOError:
 ###Sensor Configuration File Part###
     
 try:
-    with open("Sensor_Config_2.json", "r") as jsonfile:
+    with open("Sensor_Config_1.json", "r") as jsonfile:
         sensor_data = json.load(jsonfile)
     
     print('')
@@ -85,13 +85,13 @@ try:
     Initialize = input("Do you want to set another Configuration file for your Sensors? Enter Y/N:")
     
     if (Initialize.lower() == 'y'):
-        os.remove('Sensor_Config_2.json')
+        os.remove('Sensor_Config_1.json')
         
 except:
     print('Error: There is no former Sensor Config or corrupted!')     
 
 try:
-    if (os.path.exists('Sensor_Config_2.json') == 0):
+    if (os.path.exists('Sensor_Config_1.json') == 0):
         print("")
         print("There isn't any Sensor Information at the moment. Please proceed to selecting Sensors.")
         print("Please Select the Sensors you want to setup")
@@ -130,7 +130,7 @@ try:
             }
         
         json_dump = json.dumps(sensorselect)
-        f = open("Sensor_Config_2.json","w")
+        f = open("Sensor_Config_1.json","w")
         f.write(json_dump)
         f.close()
         
@@ -139,7 +139,7 @@ except IOError:
     
 ###Serial Data Send TO Arduino###
 
-with open("Sensor_Config_2.json", "r") as jsonfile:
+with open("Sensor_Config_1.json", "r") as jsonfile:
     sensor_data = json.load(jsonfile)
     sensorlist = sensor_data['SensorSetup']
     

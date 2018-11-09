@@ -40,7 +40,7 @@ try:
     
     Initialize = input("Do you want to set another Configuration file for your Company? Enter Y/N:")
     
-    if (Initialize.lower() == 'Y'):
+    if (Initialize.lower() == 'y'):
         os.remove('Config.json')
         
 except:
@@ -84,7 +84,7 @@ try:
     
     Initialize = input("Do you want to set another Configuration file for your Sensors? Enter Y/N:")
     
-    if (Initialize.lower() == 'Y'):
+    if (Initialize.lower() == 'y'):
         os.remove('Sensor_Config_1.json')
         
 except:
@@ -173,12 +173,12 @@ while True and ser.isOpen():
         line = line.decode("utf-8") #ser.readline returns a binary, convert to string
         print(line)
         data = {
-                "code":'365',
-                "data":str(line),
-                "sensor_is":sensor_data['Sensor_name'],
-                "ofis":sensor_data['Office_name']
+                "code":'42',
+                "value":str(line),
+                "sensor_no":'3124',
+                "oda_no":'1'
         }
-        request = requests.post('http://192.168.2.90:8080/collector/socket/form/', data=data)
+        request = requests.post('http://192.168.2.90:8080/collectors/receive/form/', data=data)
             
     except KeyboardInterrupt:
         print("Keyboard Interrupt")

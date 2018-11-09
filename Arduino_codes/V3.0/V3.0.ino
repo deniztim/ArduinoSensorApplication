@@ -66,7 +66,7 @@ void loop()
     }
   }
     
-    delay(500);
+    delay(9000);
 }
 
 void SetupTemparature()
@@ -76,7 +76,7 @@ void SetupTemparature()
   float mv = ( tempVal/1024.0)*5000; 
   float cel = mv/10;
   
-  Serial.print("\nC ");
+//  Serial.print("C ");
   Serial.println(cel);
   display.println("C: ");
   display.setCursor(20,27);
@@ -97,7 +97,7 @@ void SetupDistance()
   totalDistance = (double)travelTime*0.034;
   distance = totalDistance / 2;
   
-  Serial.print("\ncm ");
+  Serial.print("cm ");
   Serial.println(distance);
   display.println("Cm: ");
   display.setCursor(20,14);
@@ -110,14 +110,14 @@ void SetupHumidityWarmth()
 {
   DHT11.attach(9);
   int chk = DHT11.read();
-  Serial.print("\nHumidity: ");
-  Serial.println((double)DHT11.humidity, 9);
-  delay(50);
-  Serial.print("\nTemparature: ");
-  Serial.println((double)DHT11.temperature, 9);
-  delay(50);
-  Serial.print("\nDewPoint: ");
-  Serial.println(DHT11.dewPoint(), 9);
+//  Serial.print("Humidity: ");
+  Serial.println(DHT11.humidity, 9);
+//  delay(50);
+//  Serial.print("Temparature: ");
+//  Serial.println((double)DHT11.temperature, 9);
+//  delay(50);
+//  Serial.print("DewPoint: ");
+//  Serial.println(DHT11.dewPoint(), 9);
   delay(500);
 }
 
@@ -125,9 +125,9 @@ void SetupLDR()
 {
   display.setCursor(5,5);
   LDRValue = analogRead(LDRPin);
-  Serial.print("\nLightDensity: ");
+  Serial.print("LightDensity: ");
   Serial.println(LDRValue);
-  display.println("\nLight: ");
+  display.println("Light: ");
   display.setCursor(35,5);
   display.print(LDRValue);
   display.display();
