@@ -18,7 +18,7 @@ userSelection = 1
 available_sensors=['Distance', 'Warmth', 'Light Density', 'Humidity and Warmth']
 
 try:
-    ser = serial.Serial("COM3",9600,timeout=5); #Might be changed according to OS and USB setup
+    ser = serial.Serial("/dev/ttyACM0",9600,timeout=5); #Might be changed according to OS and USB setup
     time.sleep(1)
 except SerialException:
     print('There is no arduino connected!')

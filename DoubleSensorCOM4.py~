@@ -125,7 +125,7 @@ try:
         
         sensorselect = {
             'SensorSetup':sensorSelect,
-            'Sensor_name': Sensor_name,
+            'Sensor_name': sensor_name,
             'Office_name':Office_name
             }
         
